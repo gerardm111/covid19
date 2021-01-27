@@ -1,0 +1,118 @@
+<body>
+    <ng-template #content let-modal> 
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Warning information</h4> 
+            <button type="button" class="close" aria-label="Close" (click)= "modal.dismiss('Cross click')"> 
+                <span aria-hidden="true"> × </span> 
+            </button> 
+        </div> 
+        <div class="modal-body">  
+            <div class="form-group"> 
+                <h5>You can't sign in because you are not an eligible user and then you can't add news.</h5> 
+                <p>If you want to become one, contact mahaut-louise@hotmail.fr, giving your Gmail adress and your name. Why would you be an eligible user?</p>
+            </div> 
+        </div>    
+    </ng-template>
+
+    <div class="text-right mb-1">
+        <button class="btn btn-lg btn-outline-danger" (click)="open(content)" *ngIf="popUp">Warning</button> 
+    </div>
+
+
+    <div class="text-right mb-1">
+        <button class="btn btn-info" (click)="this.signButton()" *ngIf="!popUp">{{SignIn}}</button>
+    </div>
+    <div class="text-right">
+        <button class="btn btn-danger" (click)="this.addNewsButton()" *ngIf="bool">Add News</button>
+    </div>
+    
+    <div class="text-center my-5">
+        <h1 class="font-weight-bold">
+            <img src="https://firebasestorage.googleapis.com/v0/b/covid19-fee7a.appspot.com/o/virus2.PNG?alt=media&token=8493d8a3-d5c4-48ce-b0e4-b55e7cede7cc"  class="w-5" alt="virus image"/>
+            COVID-19
+        </h1>
+        <h3 class="text-muted font-weight-blod">Live Updates and Statistics</h3>
+        <div class="bg-dark p-1 mb-3 text-center">
+            <h5 class="font-weight-bold">
+                <a (click)="this.covid19Service.goToHome()" class="text-primary">Worldwide</a>
+                <span class="text-light"> > {{country.displayName}}</span>
+            </h5>
+        </div>
+    </div>
+
+    <div class="mb-5">
+        <h5 class="font-weight-bold bg-light p-2">Corona Virus Summary in {{country.displayName}}</h5>
+    <table class="table table-bordered">
+        <thead></thead>
+        <tbody>
+            <tr class="table-warning">
+                <td>Total Cases</td>
+                <td>{{country.cases}}</td>
+            </tr>
+            <tr class="table-warning">
+                <td>New Cases</td>
+                <td>{{country.newCases}}</td>
+            </tr>
+            <tr class="table-warning">
+                <td>Active Cases</td>
+                <td>{{country.cases-country.recovered-country.deaths}}</td>
+            </tr>
+            <tr class="table-primary">
+                <td>Total Recovered</td>
+                <td>{{country.recovered}}</td>
+            </tr>
+            <tr class="table-primary">
+                <td>New Recovered</td>
+                <td>{{country.newRecovered}}</td>
+            </tr>
+            <tr class="table-primary">
+                <td>Recovery Rate</td>
+                <td>{{(country.recovered/country.cases)*100}} %</td>
+            </tr>
+            <tr class="table-danger">
+                <td>Total Death</td>
+                <td>{{country.deaths}}</td>
+            </tr>
+            <tr class="table-danger">
+                <td>New Death</td>
+                <td>{{country.newDeaths}}</td>
+            </tr>
+            <tr class="table-danger">
+                <td>Mortality Rate</td>
+                <td>{{(country.deaths/country.cases)*100}} %</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+    <div class="mb-5">
+        <h5 class="font-weight-bold bg-light p-2">Corona Virus Cases Distribution in {{country.displayName}}</h5>
+        <canvas id="myPieChart"></canvas>
+    </div>
+  
+
+    <div class="mb-5">
+        <h5 class="font-weight-bold bg-light p-2">Daily Corona Virus Cases in {{country.displayName}}</h5>
+        <canvas id="myBarChart"></canvas>
+    </div>
+
+    <div class="mb-5">
+        <h5 class="font-weight-bold bg-light p-2">Total Corona Virus Cases in {{country.displayName}}</h5>
+        <canvas id="myLineChart"></canvas>
+    </div>
+
+    <div class="mb-5">
+        <h5 class="font-weight-bold bg-light p-2">News in {{country.displayName}}</h5>
+        <div class="mb-3 border" *ngFor="let news of existingNews">
+            <h4>{{news.date.toDate() | date}}: {{news.countrySelected}}</h4>
+            <h5 class="text-muted font-weight-blod">{{news.author}}</h5>
+            <h5>{{news.news}}</h5>
+        </div>
+    </div>
+
+<h5 class="font-weight-bold bg-light p-2 text-center">
+    <span>Data Source: </span>
+    <a href="https://covid19api.com/#subscribe">COVID-19 API / Johns Hopkins CSSE</a>
+</h5>
+
+</body>

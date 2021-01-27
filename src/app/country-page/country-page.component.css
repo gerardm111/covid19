@@ -1,0 +1,6 @@
+img{
+    width : 5%
+}
+table.table-bordered > tbody > tr > td{
+    border: 2px solid white
+}

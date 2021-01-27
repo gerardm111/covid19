@@ -1,0 +1,150 @@
+<body>
+
+    <ng-template #content let-modal> 
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Warning information</h4> 
+            <button type="button" class="close" aria-label="Close" (click)= "modal.dismiss('Cross click')"> 
+                <span aria-hidden="true"> × </span> 
+            </button> 
+        </div> 
+        <div class="modal-body">  
+            <div class="form-group"> 
+                <h5>You can't sign in because you are not an eligible user and then you can't add news.</h5> 
+                <p>If you want to become one, contact mahaut-louise@hotmail.fr, giving your Gmail adress and your name. Why would you be an eligible user?</p>
+            </div> 
+        </div>    
+    </ng-template>
+
+    <div class="text-right mb-1">
+        <button class="btn btn-lg btn-outline-danger" (click)="open(content)" *ngIf="popUp">Warning</button> 
+    </div>
+
+
+    <div class="text-right mb-1">
+        <button class="btn btn-info" (click)="this.signButton()" *ngIf="!popUp">{{SignIn}}</button>
+    </div>
+    <div class="text-right">
+        <button class="btn btn-danger" (click)="this.addNewsButton()" *ngIf="bool">Add News</button>
+    </div>
+
+    <div class="text-center my-5">
+        <h1 class="font-weight-bold">
+            <img src="https://firebasestorage.googleapis.com/v0/b/covid19-fee7a.appspot.com/o/virus2.PNG?alt=media&token=8493d8a3-d5c4-48ce-b0e4-b55e7cede7cc"  class="w-5" alt="virus image"/>
+            COVID-19
+        </h1>
+        <h3 class="text-muted font-weight-blod">Live Updates and Statistics</h3>
+    </div>
+
+    <div class="p-1 mb-3">
+        <h5 class="font-weight-bold font-italic">
+            <a href="#newsIci">See worldwide news</a>
+        </h5>
+    </div>
+
+<div class="mb-5">
+    <h5 class="font-weight-bold bg-light p-2">Corona Virus Summary Worldwide</h5>
+
+<table class="table table-bordered">
+    <thead></thead>
+    <tbody>
+        <tr class="table-warning">
+            <td>Total Cases</td>
+            <td>{{global_data["TotalConfirmed"]}}</td>
+        </tr>
+        <tr class="table-warning">
+            <td>New Cases</td>
+            <td>{{global_data["NewConfirmed"]}}</td>
+        </tr>
+        <tr class="table-warning">
+            <td>Active Cases</td>
+            <td>{{global_data["TotalConfirmed"]-global_data["TotalRecovered"]-global_data["TotalDeaths"]}}</td>
+        </tr>
+        <tr class="table-primary">
+            <td>Total Recovered</td>
+            <td>{{global_data["TotalRecovered"]}}</td>
+        </tr>
+        <tr class="table-primary">
+            <td>New Recovered</td>
+            <td>{{global_data["NewRecovered"]}}</td>
+        </tr>
+        <tr class="table-primary">
+            <td>Recovery Rate</td>
+            <td>{{(global_data["TotalRecovered"]/global_data["TotalConfirmed"])*100}} %</td>
+        </tr>
+        <tr class="table-danger">
+            <td>Total Death</td>
+            <td>{{global_data["TotalDeaths"]}}</td>
+        </tr>
+        <tr class="table-danger">
+            <td>New Death</td>
+            <td>{{global_data["NewDeaths"]}}</td>
+        </tr>
+        <tr class="table-danger">
+            <td>Mortality Rate</td>
+            <td>{{(global_data["TotalDeaths"]/global_data["TotalConfirmed"])*100}} %</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<div class="mb-5">
+    <h5 class="font-weight-bold bg-light p-2">Corona Virus Cases Distribution Worldwide</h5>
+    <canvas id="myPieChart"></canvas>
+</div>
+
+<div class="mb-5">
+    <h5 class="font-weight-bold bg-light p-2">Daily Corona Virus Cases Worldwide</h5>
+    <canvas id="myBarChart"></canvas>
+</div>
+
+<div class="mb-5">
+    <h5 class="font-weight-bold bg-light p-2">Total Corona Virus Cases Worldwide</h5>
+    <canvas id="myLineChart"></canvas>
+</div>
+
+<div class="mb-5">
+    <h5 class="font-weight-bold bg-light p-2">Corona Virus Cases by Country</h5>
+    <table matSort (matSortChange)="sortData($event)" class="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th mat-sort-header="displayName" class="table-active">Country</th>
+          <th mat-sort-header="cases" class="table-warning">Cases</th>
+          <th mat-sort-header="newCases" class="table-warning">New cases</th>
+          <th mat-sort-header="recovered" class="table-primary">Recovered</th>
+          <th mat-sort-header="newRecovered" class="table-primary">New recovered</th>
+          <th mat-sort-header="deaths" class="table-danger">Deaths</th>
+          <th mat-sort-header="newDeaths" class="table-danger">New deaths</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let row of sortedData" (click)="this.countryButton(row)">
+          <td class="table-active">{{row["Country"]}}</td>
+          <td class="table-warning">{{row["TotalConfirmed"]}}</td>
+          <td class="table-warning">{{row["NewConfirmed"]}}</td>
+          <td class="table-primary">{{row["TotalRecovered"]}}</td>
+          <td class="table-primary">{{row["NewRecovered"]}}</td>
+          <td class="table-danger">{{row["TotalDeaths"]}}</td>
+          <td class="table-danger">{{row["NewDeaths"]}}</td>
+        </tr>
+        </tbody>
+      </table>
+</div>
+
+<div class="mb-5" id="newsIci">
+    <h5 class="font-weight-bold bg-light p-2">Worldwide news</h5>
+    <div class="mb-3 border" *ngFor="let news of existingNews">
+        <h4>{{news.date.toDate() | date}}: {{news.countrySelected}}</h4>
+        <h5 class="text-muted font-weight-blod">{{news.author}}</h5>
+        <h5>{{news.news}}</h5>
+    </div>
+</div>
+
+<h5 class="font-weight-bold bg-light p-2 text-center">
+    <span>Data Source: </span>
+    <a href="https://covid19api.com/#subscribe">COVID-19 API / Johns Hopkins CSSE</a>
+    <span> and </span>
+    <a href="https://corona.lmao.ninja/v2/historical/all">Corona API</a>
+</h5>
+
+</body>

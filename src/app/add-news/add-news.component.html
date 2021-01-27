@@ -1,0 +1,41 @@
+<body>
+    <div>
+        <p>Welcome {{user.displayName}}!</p>
+    </div>
+    <div class="text-right mb-5">
+        <button class="btn btn-info" (click)="this.covid19Service.goToHome()">Home Page</button>
+    </div>
+
+    <div class="text-center my-5">
+        <h1 class="font-weight-bold">
+            <img src="https://firebasestorage.googleapis.com/v0/b/covid19-fee7a.appspot.com/o/virus2.PNG?alt=media&token=8493d8a3-d5c4-48ce-b0e4-b55e7cede7cc"  class="w-5" alt="virus image"/>
+            COVID-19
+        </h1>
+        <h3 class="text-muted font-weight-blod">Add a news</h3>
+    </div>
+
+    <form (ngSubmit)="addNews()" class="mb-3">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="dateInput">Date</label>
+            <input type="date" id="dateInput" name="dateInput" class="form-control" [(ngModel)]="date" required/>
+        </div>
+        <div class="col-md-6">
+            <label for="countyInput">Country</label>
+            <select name="countryInput" class="form-control" size="1" [(ngModel)]= "countrySelected" required>
+                <option disabled selected>Select the country</option>
+                <option>Worldwide</option>
+                <option *ngFor = "let country of country">{{country["Country"]}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <label for="NewsInput">News</label>
+            <textarea class="form-control" rows="3" id="NewsInput" name="NewsInput" placeholder="Enter your news" [(ngModel)]="news" required></textarea>
+        </div>
+    </div>
+    <button class="btn btn-warning">Add</button>
+    </form>
+
+</body>

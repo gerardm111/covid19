@@ -1,0 +1,17 @@
+img{
+    width : 5%
+}
+table.table-bordered > tbody > tr > td{
+border: 2px solid white
+}
+table.table-bordered > thead > tr > th{
+    border: 2px solid white
+    }
+ table.table-bordered > tbody > tr > td{
+    border: 2px solid white
+    }
+
+::ng-deep .mat-sort-header-container:not(.mat-sort-header-sorted) .mat-sort-header-arrow {
+    opacity: 0.54 !important;
+    transform: translateY(0px) !important;
+    }
